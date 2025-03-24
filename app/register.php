@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'photoType' => trim($_POST['photoType']),
         'photoDate' => trim($_POST['photoDate']),
         'photoTime' => trim($_POST['photoTime']),
+        'comments' => isset($_POST['comments']) ? trim($_POST['comments']) : '',
     ];
 
     if (empty($formData['userSurname'])) {
