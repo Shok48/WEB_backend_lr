@@ -33,7 +33,7 @@
                 <h2>Контактные данные</h2>
                 <section>
                     <label for="userPhone">Телефон пользователя: </label>
-                    <input type="tel" name="userPhone" id="userPhone" placeholder="+7(___)___-__-__" required>
+                    <input type="tel" name="userPhone" id="userPhone" placeholder="+7 (___) ___-__-__" required>
                     <p class="error">Телефон должен содержать только цифры</p>
                 </section>
                 <section>
