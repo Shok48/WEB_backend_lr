@@ -1,5 +1,14 @@
+<?php
+session_start();
+$errors = [];
+if (isset($_SESSION['errors'])) {
+    $errors = $_SESSION['errors'];
+    unset($_SESSION['errors']);
+}
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -75,6 +84,15 @@
 
         <button type="submit">Отправить</button>
     </form>
+    <?php if (!empty($errors)): ?>
+        <div class="form-errors">
+            <ul>
+                <?php foreach ($errors as $error): ?>
+                    <li class="error"><?= htmlspecialchars($error) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
     <script src="script.js"></script>
 </body>
 </html>

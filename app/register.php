@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 function validateName($name) {
     return preg_match('/^[a-zA-Zа-яА-ЯёЁ]+$/u', $name);
@@ -36,54 +37,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'comments' => isset($_POST['comments']) ? trim($_POST['comments']) : '',
     ];
 
-    if (empty($formData['userSurname'])) {
-        $errors['userSurname'] = 'Фамилия обязательна';
-    }
-    elseif (!validateName($formData['userSurname'])) {
-        $errors['userSurname'] = 'Фамилия должна содержать только буквы';
-    }
-    
-    if (empty($formData['userName'])) {
-        $errors['userName'] = 'Имя обязательно';
-    }
-    elseif (!validateName($formData['userName'])) {
-        $errors['userName'] = 'Имя должно содержать только буквы';
-    }
+    $validationRules = [
+        'userSurname' => [
+            'empty' => 'Фамилия обязательна',
+            'validate' => ['func' => 'validateName', 'msg' => 'Фамилия должна содержать только буквы']
+        ],
+        'userName' => [
+            'empty' => 'Имя обязательно',
+            'validate' => ['func' => 'validateName', 'msg' => 'Имя должно содержать только буквы']
+        ],
+        'userPatronymic' => [
+            'empty' => 'Отчество обязательно',
+            'validate' => ['func' => 'validateName', 'msg' => 'Отчество должно содержать только буквы']
+        ],
+        'userPhone' => [
+            'empty' => 'Телефон обязателен',
+            'validate' => ['func' => 'validatePhone', 'msg' => 'Неверный формат телефона']
+        ],
+        'userEmail' => [
+            'empty' => 'Email обязателен',
+            'validate' => ['func' => 'validateEmail', 'msg' => 'Неверный формат email']
+        ],
+        'photoType' => [
+            'empty' => 'Тип фото обязателен'
+        ],
+        'photoDate' => [
+            'empty' => 'Дата фото обязательна',
+            'validate' => ['func' => 'validateDate', 'msg' => 'Дата фото должна быть не раньше завтра']
+        ],
+        'photoTime' => [
+            'empty' => 'Время фото обязательно'
+        ]
+    ];
 
-    if (empty($formData['userPatronymic'])) {
-        $errors['userPatronymic'] = 'Отчество обязательно';
-    }
-    elseif (!validateName($formData['userPatronymic'])) {
-        $errors['userPatronymic'] = 'Отчество должно содержать только буквы';
-    }
-
-    if (empty($formData['userPhone'])) {
-        $errors['userPhone'] = 'Телефон обязателен';
-    }
-    elseif (!validatePhone($formData['userPhone'])) {
-        $errors['userPhone'] = 'Неверный формат телефона';
-    }
-
-    if (empty($formData['userEmail'])) {
-        $errors['userEmail'] = 'Email обязателен';
-    }
-    elseif (!validateEmail($formData['userEmail'])) {
-        $errors['userEmail'] = 'Неверный формат email';
-    }
-    
-    if (empty($formData['photoType'])) {
-        $errors['photoType'] = 'Тип фото обязателен';
-    }
-
-    if (empty($formData['photoDate'])) {
-        $errors['photoDate'] = 'Дата фото обязательна';
-    }
-    elseif (!validateDate($formData['photoDate'])) {
-        $errors['photoDate'] = 'Дата фото должна быть не раньше завтра';
-    }
-
-    if (empty($formData['photoTime'])) {
-        $errors['photoTime'] = 'Время фото обязательно';
+    foreach ($validationRules as $field => $rules) {
+        if (empty($formData[$field])) {
+            $errors[$field] = $rules['empty'];
+        } elseif (isset($rules['validate']) && function_exists($rules['validate']['func'])) {
+            if (!$rules['validate']['func']($formData[$field])) {
+                $errors[$field] = $rules['validate']['msg'];
+            }
+        }
     }
 
     if (empty($errors)) {
@@ -92,13 +86,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (($file = fopen($dataFile, 'a')) !== false) {
             fputcsv($file, $formData);
             fclose($file);
-            $message = 'Заявка успешно отправлена!';
         }
-        else {
-            $message = 'Ошибка при отправке заявки!';
-        }
+    } else {
+        $_SESSION['errors'] = $errors;
+        $_SESSION['formData'] = $formData;
     }
-
+    
     header('Location: index.php');
     exit();
 }
