@@ -16,10 +16,10 @@ if (isset($_SESSION['errors'])) {
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Форма записи пользователя на съемку</h1>
-    <form action="register.php" method="post">
+    <h1>Форма добавления фотографа</h1>
+    <form action="add_photographer.php" method="post" id="addPhotographerForm">
         <div class="form-container">
-            <article>
+            <!-- <article>
                 <h2>Персональные данные</h2>
                 <section>
                     <label for="userSurname">Фамилия пользователя: </label>
@@ -79,6 +79,57 @@ if (isset($_SESSION['errors'])) {
                     <label for="comments">Дополнительные пожелания:</label>
                     <textarea name="comments" id="comments" rows="4" placeholder="Опишите ваши пожелания к фотосессии"></textarea>
                 </section>
+            </article> -->
+
+            <article>
+                <h2>Персональные данные фотографа</h2>
+                <section>
+                    <label for="photographerName">Имя фотографа: </label>
+                    <input type="text" name="photographerName" id="photographerName" require>
+                    <p class="error">Имя фотографа должно содержать только буквы</p>
+                </section>
+                <section>
+                    <label for="photographerSurname">Фамилия фотографа: </label>
+                    <input type="text" name="photographerSurname" id="photographerSurname" require>
+                    <p class="error">Фамилия фотографа должна содержать только буквы</p>
+                </section>
+                <section>
+                    <label for="photographerPatronymic">Отчетсво фотографа (при наличии): </label>
+                    <input type="text" name="photographerPatronymic" id="photographerPatronymic">
+                    <p class="error">Отчетсвво фотографа должно содержать только буквы</p>
+                </section>
+            </article>
+
+            <article>
+                <h2>Контактные данные</h2>
+                <section>
+                    <label for="photographerPhone">Телефон пользователя: </label>
+                    <input type="tel" name="photographerPhone" id="photographerPhone" placeholder="+7 (___) ___-__-__" required>
+                    <p class="error">Телефон должен содержать только цифры</p>
+                </section>
+                <section>
+                    <label for="photographerEmail">Email пользователя: </label>
+                    <input type="email" name="photographerEmail" id="photographerEmail" placeholder="example@mail.ru" required>
+                    <p class="error">Email должен содержать символ @</p>
+                </section>
+            </article>
+
+            <article>
+                <h2>Дополнительная информация</h2>
+                <section>
+                    <label for="protogragpherSpecialization">Специализация фотографа</label>
+                    <select name="protogragpherSpecialization" id="protogragpherSpecialization" require style="width: 300px;">
+                        <option value="">Выберите специализацию фотографа</option>
+                        <option value="wedding">Свадебные фото</option>
+                        <option value="portrait">Портретные фото</option>
+                        <option value="business">Фотографии для бизнеса</option>
+                        <option value="fashion">Модное фото</option>
+                        <option value="landscape">Пейзажное фото</option>
+                        <option value="childrens">Детская фотография</option>
+                        <option value="animal">Фотографии животных</option>
+                    </select>
+                    <p class="error"></p>
+                </section>
             </article>
         </div>
 
@@ -93,6 +144,6 @@ if (isset($_SESSION['errors'])) {
             </ul>
         </div>
     <?php endif; ?>
-    <script src="script.js"></script>
+    <script src="add_photographer.js"></script>
 </body>
 </html>
