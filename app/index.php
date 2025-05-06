@@ -1,10 +1,14 @@
 <?php
+require 'db.php';
 session_start();
 $errors = [];
 if (isset($_SESSION['errors'])) {
     $errors = $_SESSION['errors'];
     unset($_SESSION['errors']);
 }
+$stmt = $pdo->query("SELECT * FROM Photographers");
+
+$photographers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -135,15 +139,47 @@ if (isset($_SESSION['errors'])) {
 
         <button type="submit">Отправить</button>
     </form>
+
     <?php if (!empty($errors)): ?>
         <div class="form-errors">
             <ul>
                 <?php foreach ($errors as $error): ?>
-                    <li class="error"><?= htmlspecialchars($error) ?></li>
+                    <?php if (is_array($error)): ?>
+                        <?php foreach ($error as $err): ?>
+                            <li class="error"><?= htmlspecialchars($err) ?></li>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <li class="error"><?= htmlspecialchars($error) ?></li>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </ul>
         </div>
     <?php endif; ?>
+
+    <h2>Список пользователей</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Телефон</th>
+            <th>Почта</th>
+            <th>Специализация</th>
+        </tr>
+        <?php foreach ($photographers as $photographer): ?>
+            <tr>
+                <td><?= $photographer['id'] ?></td>
+                <td><?= $photographer['surname'] ?></td>
+                <td><?= $photographer['name'] ?></td>
+                <td><?= $photographer['patronymic'] ?></td>
+                <td><?= $photographer['phone'] ?></td>
+                <td><?= $photographer['email'] ?></td>
+                <td><?= $photographer['specialization'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
     <script src="add_photographer.js"></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+require 'db.php';
 
 function valudateFullName($value) {
     return preg_match('/^[a-zA-Zа-яА-ЯёЁ]+$/u', $value);
@@ -74,12 +75,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errors)) {
-        $dataFile = 'photographers.csv';
+        $stmt = $pdo->prepare("INSERT INTO Photographers (surname, name, patronymic, phone, email, specialization) VALUES (:surname, :name, :patronymic, :phone, :email, :specialization)");
+        $stmt->execute($formData);
         
-        if (($file = fopen($dataFile, 'a')) !== false) {
-            fputcsv($file, $formData);
-            fclose($file);
-        }
+        // $dataFile = 'photographers.csv';
+        
+        // if (($file = fopen($dataFile, 'a')) !== false) {
+        //     fputcsv($file, $formData);
+        //     fclose($file);
+        // }
     } else {
         $_SESSION['errors'] = $errors;
         $_SESSION['formData'] = $formData;
