@@ -88,6 +88,4 @@ document.addEventListener('DOMContentLoaded', function() {
     emailInput.addEventListener('input', function() {
         validateEmail(this);
     });
-
-    
 });

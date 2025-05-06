@@ -84,18 +84,18 @@ if (isset($_SESSION['errors'])) {
             <article>
                 <h2>Персональные данные фотографа</h2>
                 <section>
-                    <label for="photographerName">Имя фотографа: </label>
-                    <input type="text" name="photographerName" id="photographerName" require>
-                    <p class="error">Имя фотографа должно содержать только буквы</p>
-                </section>
-                <section>
                     <label for="photographerSurname">Фамилия фотографа: </label>
                     <input type="text" name="photographerSurname" id="photographerSurname" require>
                     <p class="error">Фамилия фотографа должна содержать только буквы</p>
                 </section>
                 <section>
+                    <label for="photographerName">Имя фотографа: </label>
+                    <input type="text" name="photographerName" id="photographerName" require>
+                    <p class="error">Имя фотографа должно содержать только буквы</p>
+                </section>
+                <section>
                     <label for="photographerPatronymic">Отчетсво фотографа (при наличии): </label>
-                    <input type="text" name="photographerPatronymic" id="photographerPatronymic">
+                    <input type="text" name="photographerPatronymic" id="photographerPatronymic" require>
                     <p class="error">Отчетсвво фотографа должно содержать только буквы</p>
                 </section>
             </article>
